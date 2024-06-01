@@ -57,7 +57,8 @@ int main ()
         vector <int> cartas (n);
 
         // Relleno el vector cartas
-        for ( int i = 0; i < n; i++ ) {
+        for ( int i = 0; i < n; i++ )
+        {
             cin >> cartas[i];
         }
 
