@@ -38,7 +38,8 @@
 #include <vector>
 using namespace std;
 
-int main () {
+int main ()
+{
     int t, n, k;
 
     // Solicito el numero de casos de prueba.
