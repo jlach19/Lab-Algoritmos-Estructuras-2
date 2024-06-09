@@ -1,15 +1,16 @@
 #include <iostream>
-#include <algorithm>
+#include <vector>
 using namespace std;
 
-const int N = 1e5 + 10;
-int n, res;
-int a[N], b[N];
 
 int main()
 {
+    int n, ans;
+    vector<int> a(100010);
+    vector<int> b(100010);
+
     cin >> n;
-    
+
     for ( int i = 0; i < n; i++ )
     {
         cin >> a[i];
@@ -29,15 +30,15 @@ int main()
 
     b[count] = n;
 
-    res = -1;
+    ans = -1;
 
     for ( int i = 0; i < count; i++)
     {
         int temp = min(b[i] - b[i - 1], b[i + 1] - b[i]);
-        res = max(res, temp);
+        ans = max(ans, temp);
     }
 
-    cout << res * 2 << endl;
+    cout << ans * 2 << endl;
 
     return 0;
 }
