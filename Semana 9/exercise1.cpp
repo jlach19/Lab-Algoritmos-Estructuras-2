@@ -17,10 +17,10 @@ struct Queue {
         rear = nullptr;
     }
     // Insertar un elemento en la cola
-    void enqueue(int date) 
+    void enqueue(int x) 
     {
         Node* new_node = new Node;
-        new_node -> date = date;
+        new_node -> date = x;
         new_node -> next = nullptr;
 
         if (front == nullptr) 
