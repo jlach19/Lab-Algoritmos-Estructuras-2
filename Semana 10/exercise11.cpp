@@ -1,279 +1,226 @@
 /**
  * Primeramente se crean nos clases con la palabra reservada "struc":
- * 
+ *
  * La clase node representa a cada no del arbol rojo negro y tendra como atributos
  * su valor, la posicion segun fue introducido al arbol, indicara quien es us padre
  * el color y los hijos tanto izquierdo como derecho
- * 
+ *
  * Y la clase BTR el cual contiene un metodo constructor para inicializar como nulo
  * la raiz y luego se crean diferentes metodo tales como: insertar un elemento a un arbol,
  * rotaciones tanto para la izquierda como derecha, buscar un elemento en un arbol para
  * indicar el la posicion de dicho elemento cuando fue insertado al arbol e incluso se hace un
  * metodo que ayuda a mantener las propiedades de un arbol rojo blanco.
- * 
+ *
  * Luego, tenemos la funcion main. Aqui Declaramos las variables "n", "q" y "value" para indicar
  * la cantidad de elementos a insertar al arbol, la cantidad de queries y el valor de cada elemento
  * a insertar al arbol, respectivamente.
- * 
+ *
  * Ademas, creo una variable de tipo RBT que representara el arbol, lo llamo tree. Luego, solicito
  * como input el valor de "n" y de "q" para que inmediatamente crear un ciclo "for" e ir llenando el arbol con
  * los elementos que se iran recibiendo como input.
- * 
+ *
  * Seguido de esto, se procede a leer cada query. Para esto se hace un ciclo while y se solicitara como input el elemento
- * que se desea buscar en el arbol para asi mostrar como output su posicion segun fue insertado al arbol. En caso de que 
+ * que se desea buscar en el arbol para asi mostrar como output su posicion segun fue insertado al arbol. En caso de que
  * el elemento no exista en el arbol mostara como output -1.
- * 
+ *
  * El programa finalizara cuando haya culminado todos los queries
  */
-#include<iostream>
+#include <iostream>
 using namespace std;
 
 // Representa cada nodo
 struct node
 {
-	int key; // Valor del elemento
-	int index; // Representa la posicion en la que fue introducido el elemento al arbol
-	node *parent; // nodo padre
-	char color; // color del nodo. Donde se identificara con una 'b' si es color es negro o 'r' si es rojo
-	node *left; // nodo hijo izquierdo
-	node *right; // nodo hijo derecho
+    int key;      // Valor del elemento
+    int index;    // Representa la posición en la que fue introducido el elemento al árbol
+    node *parent; // Nodo padre
+    char color;   // Color del nodo. 'b' si es negro, 'r' si es rojo
+    node *left;   // Nodo hijo izquierdo
+    node *right;  // Nodo hijo derecho
+
+    node(int k, int idx) : key(k), index(idx), parent(nullptr), color('r'), left(nullptr), right(nullptr) {}
 };
 
-// Representa al arbol rojo blanco
+// Representa el árbol rojo-negro
 struct RBT
 {
-    node *root; // Indica la raiz
-    int index= 0; // me permitira ir llenando a cada nodo su respectivo de entrada a medida que voy insertando cada elemento
+    node *root; // Indica la raíz
 
     // Constructor
-    RBT()
+    RBT() : root(nullptr) {}
+
+    // Método que permite insertar un elemento en el árbol.
+    void insert(int key, int index)
     {
-        root = nullptr;
-    }
-	
-    // Metodo que permite insertar un elemento en el arbol.
-    void insert(int z)
-    {
-        node *p, *q;
-        node *t = new node;
-        t -> key = z;
-        t -> left = nullptr;
-        t -> right = nullptr;
-        t -> color = 'r';
-        t -> index = index;
-        index++;
-        p = root;
-        q = nullptr;
+        if (search(root, key) != -1)
+        {
+            return;
+        }
+
+        node *new_node = new node(key, index);
 
         if (root == nullptr)
         {
-            root = t;
-            t->parent = nullptr;
+            root = new_node;
+            new_node->color = 'b';
+            return;
+        }
+
+        node *parent = nullptr;
+        node *current = root;
+
+        while (current != nullptr)
+        {
+            parent = current;
+            if (new_node->key < current->key)
+            {
+                current = current->left;
+            }
+            else
+            {
+                current = current->right;
+            }
+        }
+
+        new_node->parent = parent;
+        if (new_node->key < parent->key)
+        {
+            parent->left = new_node;
         }
         else
         {
-            while (p != nullptr)
-            {
-                q = p;
-                if (p->key < t->key)
-                {
-                    p = p->right;
-                } else
-                {
-                    p = p->left;
-                }
-            }
-
-            t->parent = q;
-
-            if (q -> key < t -> key)
-            {
-                q -> right = t;
-            } else 
-            {
-                q->left = t;
-            }
+            parent->right = new_node;
         }
-        insert_fix(t);
+
+        insert_fix(new_node);
     }
 
-    // Metodo que es responsable de mantener las propiedades de un arbol rojo negro
-    void insert_fix(node *t)
+
+
+    // Método que es responsable de mantener las propiedades de un árbol rojo-negro
+    void insert_fix(node *n)
     {
-        node *u;
-
-        if (root == t)
+        while (n->parent != nullptr && n->parent->color == 'r')
         {
-            t -> color = 'b';
-            return;
-        }
-
-        while (t -> parent != nullptr && t -> parent -> color == 'r')
-        {
-            node *g = t -> parent -> parent;
-            if (g -> left == t -> parent)
+            node *grandparent = n->parent->parent;
+            if (n->parent == grandparent->left)
             {
-                if (g -> right != nullptr)
+                node *uncle = grandparent->right;
+                if (uncle != nullptr && uncle->color == 'r')
                 {
-                    u = g -> right;
-                    if (u -> color == 'r')
-                    {
-                        t -> parent->color = 'b';
-                        u -> color = 'b';
-                        g -> color = 'r';
-                        t = g;
-                    }
-                } else
-                {
-                    if (t -> parent -> right == t)
-                    {
-                        t = t -> parent;
-                        left_rotate(t);
-                    }
-                    t -> parent -> color = 'b';
-                    g -> color = 'r';
-                    right_rotate(g);
+                    n->parent->color = 'b';
+                    uncle->color = 'b';
+                    grandparent->color = 'r';
+                    n = grandparent;
                 }
-            } else
-            {
-                if (g -> left != nullptr)
+                else
                 {
-                    u = g -> left;
-                    if (u -> color == 'r')
+                    if (n == n->parent->right)
                     {
-                        t -> parent->color = 'b';
-                        u -> color = 'b';
-                        g -> color = 'r';
-                        t = g;
+                        n = n->parent;
+                        left_rotate(n);
                     }
-                } else
-                {
-                    if (t -> parent -> left == t)
-                    {
-                        t = t -> parent;
-                        right_rotate(t);
-                    }
-
-                    t -> parent -> color = 'b';
-                    g -> color = 'r';
-
-                    left_rotate(g);
+                    n->parent->color = 'b';
+                    grandparent->color = 'r';
+                    right_rotate(grandparent);
                 }
-            }
-
-            root -> color = 'b';
-        }
-    }
-
-    // Metodo para hacer la rotacion a la izquierda
-    void left_rotate(node *p)
-    {
-        if (p -> right == nullptr)
-        {
-            return;
-        } else
-        {
-            node *y = p -> right;
-            if (y -> left != nullptr)
-            {
-                p -> right = y -> left;
-                y -> left -> parent = p;
             }
             else
-                p -> right = nullptr;
-            if (p -> parent != nullptr)
-                y -> parent = p -> parent;
-            if (p -> parent == nullptr)
-                root = y;
-            else
             {
-                if (p == p -> parent -> left)
+                node *uncle = grandparent->left;
+                if (uncle != nullptr && uncle->color == 'r')
                 {
-                    p -> parent -> left = y;
-                } else
+                    n->parent->color = 'b';
+                    uncle->color = 'b';
+                    grandparent->color = 'r';
+                    n = grandparent;
+                }
+                else
                 {
-                    p -> parent -> right = y;
+                    if (n == n->parent->left)
+                    {
+                        n = n->parent;
+                        right_rotate(n);
+                    }
+                    n->parent->color = 'b';
+                    grandparent->color = 'r';
+                    left_rotate(grandparent);
                 }
             }
-
-            y -> left = p;
-            p -> parent = y;
         }
+        root->color = 'b';
     }
 
-    // Metodo para hacer la rotacion hacia la derecha
-    void right_rotate(node *p)
+    // Método para hacer la rotación a la izquierda
+    void left_rotate(node *n)
     {
-        if (p -> left == nullptr)
+        node *r = n->right;
+        n->right = r->left;
+        if (r->left != nullptr)
         {
-            return;
+            r->left->parent = n;
+        }
+        r->parent = n->parent;
+        if (n->parent == nullptr)
+        {
+            root = r;
+        }
+        else if (n == n->parent->left)
+        {
+            n->parent->left = r;
         }
         else
         {
-            node *y = p -> left;
-            if (y -> right != nullptr)
-            {
-                p -> left = y->right;
-                y -> right->parent = p;
-            }
-            else
-                p -> left = nullptr;
-            if (p -> parent != nullptr)
-                y -> parent = p->parent;
-            if (p -> parent == nullptr)
-                root = y;
-            else
-            {
-                if (p == p->parent->left)
-                {
-                    p -> parent->left = y;
-                } else
-                {
-                    p -> parent->right = y;
-                }
-            }
-
-            y -> right = p;
-            p -> parent = y;
+            n->parent->right = r;
         }
+        r->left = n;
+        n->parent = r;
     }
 
-    // Este metodo nos retornara la posicion del elemento segun fue insertado en el arbol.
-    // De no encontrarse el elemento nos retorna -1
-    int search(int x)
+    // Método para hacer la rotación a la derecha
+    void right_rotate(node *n)
+    {
+        node *l = n->left;
+        n->left = l->right;
+        if (l->right != nullptr)
+        {
+            l->right->parent = n;
+        }
+        l->parent = n->parent;
+        if (n->parent == nullptr)
+        {
+            root = l;
+        }
+        else if (n == n->parent->left)
+        {
+            n->parent->left = l;
+        }
+        else
+        {
+            n->parent->right = l;
+        }
+        l->right = n;
+        n->parent = l;
+    }
+
+    // Método para buscar un elemento en el árbol
+    int search(node *root, int key)
     {
         if (root == nullptr)
         {
-            return -1; // El arbol esta vacio
+            return -1; // El árbol está vacío
         }
-
-        node *p = root;
-        bool found = false;
-
-        while (p != nullptr && found == false)
+        if (root->key == key)
         {
-            if (p->key == x)
-            {
-                found = true;
-            }
-            if (found == false)
-            {
-                if (p->key < x)
-                {
-                    p = p -> right;
-                } else
-                {
-                    p = p -> left;
-                }
-            }
+            return root->index;
         }
-
-        if (found == false)
+        if (root->key > key)
         {
-            return -1;
-        } else
+            return search(root->left, key);
+        }
+        else
         {
-            return p -> index;
+            return search(root->right, key);
         }
     }
 };
@@ -284,26 +231,33 @@ int main()
      * La variable "n" representa la cantidad de elementos que se insertara al arbol.
      * La variable "q" representa los queries.
      * La variable "value" representa el valor de cada uno de los elementos que vayamos a insertar en el arbol.
-    */
+     */
     int n, q, value;
     RBT tree; // Se declara la variable tree de tipo "RBT"
-    scanf("%d", &n); // Recibe la cantidad de elementos que va recibir el arbol.
-    scanf("%d", &q);  // Recibe la cantidad de queries.
+
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    // Recibe la cantidad de elementos que va recibir el arbol.
+    // Recibe la cantidad de queries.
+    cin >> n >> q;
 
     // Relleno el arbol
     for (int i = 0; i < n; i++)
     {
-        scanf("%d", &value); // Recibo el valor del elemento a insertar en el arbol
-        tree.insert(value); // Inserto el elemento al arbol
+        cin >> value;          // Recibo el valor del elemento a insertar en el arbol
+        tree.insert(value, i); // Inserto el elemento al arbol
     }
 
     value = 0;
 
+
+
     // Este ciclo me permitira ir solicitando cada query
-    while(q--)
+    while (q--)
     {
-        scanf("%d", &value); // Recibo el valor del elemento que quiero buscar en el arbol
-        printf("%d\n", tree.search(value)); // Imprimo la posicion del elemento segun su entrada al arbol y si esta repetido sera su primera ocurrencia
+        cin >> value; // Recibo el valor del elemento que quiero buscar en el arbol
+        cout << tree.search(tree.root, value) << "\n";
     }
 
     return 0;
