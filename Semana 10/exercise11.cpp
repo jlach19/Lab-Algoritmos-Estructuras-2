@@ -48,7 +48,6 @@ struct RBT
     // Constructor
 	RBT()
 	{
-		// q = nullptr;
 		root = nullptr;
 	}
 	
