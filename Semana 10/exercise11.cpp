@@ -42,7 +42,7 @@ struct node
 // Representa al arbol rojo blanco
 struct RBT
 {
-	node *root; // Indica la raiz
+    node *root; // Indica la raiz
     int index= 0; // me permitira ir llenando a cada nodo su respectivo de entrada a medida que voy insertando cada elemento
 
     // Constructor
