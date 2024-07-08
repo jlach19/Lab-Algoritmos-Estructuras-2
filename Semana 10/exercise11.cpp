@@ -194,8 +194,7 @@ struct RBtree
     {
         if (root == NULL)
         {
-            cout << "\nEmpty Tree\n";
-            return;
+            return; // El arbol esta vacio
         }
 
         node *p = root;
@@ -204,7 +203,9 @@ struct RBtree
         while (p != NULL && found == 0)
         {
             if (p->key == x)
+            {
                 found = 1;
+            }
             if (found == 0)
             {
                 if (p->key < x)
@@ -216,34 +217,11 @@ struct RBtree
 
         if (found == 0)
         {
-            cout << "\nElement Not Found."; //? PUDIERA AQUI DECIR QUE RETORNE -1 LA FUNCION
-            cout << "La posicion es :" << -1;
+            printf("%d\n", -1);
         }
         else
         {
-            cout << "\n\t FOUND NODE: ";
-            cout << "\n Key: " << p->key;
-            cout << "\n Colour: ";
-            if (p->color == 'b')
-                cout << "Black";
-            else
-                cout << "Red";
-            if (p->parent != NULL)
-                cout << "\n Parent: " << p->parent->key;
-            else
-                cout << "\n There is no parent of the node.  ";
-            if (p->right != NULL)
-                cout << "\n Right Child: " << p->right->key;
-            else
-                cout << "\n There is no right child of the node.  ";
-            if (p->left != NULL)
-                cout << "\n Left Child: " << p->left->key;
-            else
-                cout << "\n There is no left child of the node.  ";
-            cout << endl;
-
-            cout << "La posicion es: " << p -> index << endl;
-
+            printf("%d\n", p -> index);
         }
     }
 };
@@ -257,18 +235,18 @@ int main()
 
     for (int i = 0; i < n; i++)
     {
-        cin >> value;
+        scanf("%d", &value);
         tree.insert(value);
     }
 
-    while (q--)
+    value = 0;
+
+    while(q--)
     {
-        int value;
         scanf("%d", &value);
         tree.search(value);
 
     }
-        
 
 	return 0;
 }
