@@ -3,7 +3,7 @@
  *
  * La clase node representa a cada no del arbol rojo negro y tendra como atributos
  * su valor, la posicion segun fue introducido al arbol, indicara quien es us padre
- * el color y los hijos tanto izquierdo como derecho
+ * el color y los hijos tanto izquierdo como derecho. Asi como su metodo constructor.
  *
  * Y la clase BTR el cual contiene un metodo constructor para inicializar como nulo
  * la raiz y luego se crean diferentes metodo tales como: insertar un elemento a un arbol,
