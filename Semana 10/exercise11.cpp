@@ -46,10 +46,10 @@ struct RBT
     int index= 0; // me permitira ir llenando a cada nodo su respectivo de entrada a medida que voy insertando cada elemento
 
     // Constructor
-	RBT()
-	{
-		root = nullptr;
-	}
+    RBT()
+    {
+        root = nullptr;
+    }
 	
     // Metodo que permite insertar un elemento en el arbol.
     void insert(int z)
