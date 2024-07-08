@@ -9,7 +9,7 @@
  * la raiz y luego se crean diferentes metodo tales como: insertar un elemento a un arbol,
  * rotaciones tanto para la izquierda como derecha, buscar un elemento en un arbol para
  * indicar el la posicion de dicho elemento cuando fue insertado al arbol e incluso se hace un
- * metodo que ayuda a mantener las propiedades de un arbol rojo blanco.
+ * metodo que ayuda a mantener las propiedades de un arbol rojo negro.
  *
  * Luego, tenemos la funcion main. Aqui Declaramos las variables "n", "q" y "value" para indicar
  * la cantidad de elementos a insertar al arbol, la cantidad de queries y el valor de cada elemento
