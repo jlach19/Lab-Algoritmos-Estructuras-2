@@ -287,8 +287,8 @@ int main()
      * La variable "q" representa los queries.
      * La variable "value" representa el valor de cada uno de los elementos que vayamos a insertar en el arbol.
     */
-    int n, q, value; 
-	RBT tree; // Se declara la variable tree de tipo "RBT"
+    int n, q, value;
+    RBT tree; // Se declara la variable tree de tipo "RBT"
     scanf("%d", &n); // Recibe la cantidad de elementos que va recibir el arbol.
     scanf("%d", &q);  // Recibe la cantidad de queries.
 
