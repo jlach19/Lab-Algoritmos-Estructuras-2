@@ -43,7 +43,6 @@ struct node
 struct RBT
 {
 	node *root; // Indica la raiz
-	// node *q;
     int index= 0; // me permitira ir llenando a cada nodo su respectivo de entrada a medida que voy insertando cada elemento
 
     // Constructor
@@ -308,5 +307,5 @@ int main()
         printf("%d\n", tree.search(value)); // Imprimo la posicion del elemento segun su entrada al arbol y si esta repetido sera su primera ocurrencia
     }
 
-	return 0;
+    return 0;
 }
