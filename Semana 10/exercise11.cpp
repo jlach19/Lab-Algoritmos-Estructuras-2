@@ -29,6 +29,7 @@
 using namespace std;
 
 // Representa cada nodo
+// Representa cada nodo
 struct node
 {
     int key;      // Valor del elemento
@@ -38,8 +39,16 @@ struct node
     node *left;   // Nodo hijo izquierdo
     node *right;  // Nodo hijo derecho
 
-    node(int k, int idx) : key(k), index(idx), parent(nullptr), color('r'), left(nullptr), right(nullptr) {}
+    node(int k, int idx) {
+        key = k;
+        index = idx;
+        parent = nullptr;
+        color = 'r';
+        left = nullptr;
+        right = nullptr;
+    }
 };
+
 
 // Representa el árbol rojo-negro
 struct RBT
@@ -47,8 +56,11 @@ struct RBT
     node *root; // Indica la raíz
 
     // Constructor
-    RBT() : root(nullptr) {}
-
+    RBT()
+    {
+        root = nullptr;
+    }
+    
     // Método que permite insertar un elemento en el árbol.
     void insert(int key, int index)
     {
